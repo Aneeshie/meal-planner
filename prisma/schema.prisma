@@ -12,7 +12,82 @@ datasource db {
 }
 
 model User {
-  id    Int    @id @default(autoincrement())
-  name  String
-  email String @unique
+  id         Int      @id @default(autoincrement())
+  name       String
+  email      String   @unique
+  password   String
+  meal       Meal[]
+  role       Role
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model Food {
+  id              Int               @id @default(autoincrement())
+  name            String            @unique
+  calories        Float?
+  protein         Float?
+  fat             Float?
+  carbohydrates   Float?
+  created_at      DateTime          @default(now())
+  updated_at      DateTime          @updatedAt
+  category        Category?         @relation(fields: [categoryId], references: [id])
+  categoryId      Int?
+  foodServingUnit FoodServingUnit[]
+  meal            Meal?             @relation(fields: [mealId], references: [id])
+  mealId          Int?
+  mealFood        MealFood[]
+}
+
+model Category {
+  id         Int      @id @default(autoincrement())
+  name       String   @unique
+  foods      Food[]
+  created_at DateTime @default(now())
+  udpated_at DateTime @updatedAt
+}
+
+model ServingUnit {
+  id              Int               @id @default(autoincrement())
+  name            String            @unique
+  created_at      DateTime          @default(now())
+  updated_at      DateTime          @updatedAt
+  foodServingUnit FoodServingUnit[]
+  mealFood        MealFood[]
+}
+
+model FoodServingUnit {
+  id            Int         @id @default(autoincrement())
+  food          Food        @relation(fields: [foodId], references: [id])
+  foodId        Int
+  servingUnit   ServingUnit @relation(fields: [servingUnitId], references: [id])
+  servingUnitId Int
+  grams         Float?
+}
+
+model Meal {
+  id         Int        @id @default(autoincrement())
+  dateTime   DateTime
+  foods      Food[]
+  user       User       @relation(fields: [userId], references: [id])
+  userId     Int
+  created_at DateTime   @default(now())
+  updated_at DateTime   @updatedAt
+  mealFood   MealFood[]
+}
+
+model MealFood {
+  id            Int         @id @default(autoincrement())
+  food          Food        @relation(fields: [foodId], references: [id])
+  foodId        Int
+  meal          Meal        @relation(fields: [mealId], references: [id])
+  mealId        Int
+  servingUnit   ServingUnit @relation(fields: [servingUnitId], references: [id])
+  servingUnitId Int
+  amount        Float
 }

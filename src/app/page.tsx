@@ -1,5 +1,12 @@
-export default function Home() {
+import prisma from "@/lib/prisma";
+
+export default async function Home() {
+
+
+  const user = await prisma.user.findFirst();
+
+
   return (
-    <h1>Hello</h1>
+    <>{JSON.stringify(user)}</>
   );
 }
