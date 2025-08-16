@@ -27,6 +27,7 @@ import Link from "next/link";
 import { Avatar } from "@/components/ui/avatar";
 import { AvatarFallback } from "@radix-ui/react-avatar";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { ModeToggle } from "@/components/theme-toggle";
 
 type RouteGroupType = {
   group: string;
@@ -136,6 +137,7 @@ const DashBoardLayout = ({ children }: DashBoardLayoutProps) => {
             </Button>
           </Collapsible.Trigger>
         </Collapsible.Root>
+        <ModeToggle />
 
         {/* Topbar Right */}
         <div className="flex items-center gap-2">
